@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://bijs1kwt2ldkg"]
+
+[ext_resource type="Script" uid="uid://j4hh28pflenq" path="res://Gameplay/Escenas/player.gd" id="1_0v6rd"]
+[ext_resource type="Texture2D" uid="uid://i6kxwspyncbl" path="res://icon.svg" id="1_lsi4v"]
+[ext_resource type="PackedScene" uid="uid://dljcebdvxbhhd" path="res://Gameplay/Escenas/hitbox_pierna.tscn" id="3_lm0od"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lsi4v"]
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = ExtResource("1_0v6rd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_lsi4v")
+
+[node name="Icon" type="Sprite2D" parent="CollisionShape2D"]
+texture = ExtResource("1_lsi4v")
+
+[node name="HitboxPierna" parent="." instance=ExtResource("3_lm0od")]
+position = Vector2(-1, 39)
+scale = Vector2(3.055, 1.355)
+
+[connection signal="area_entered" from="HitboxPierna" to="." method="_on_hitbox_pierna_area_entered"]

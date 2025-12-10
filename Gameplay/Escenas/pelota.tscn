@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://ci4a8s3b6glt2"]
+
+[ext_resource type="Script" uid="uid://do5ojknxatmc4" path="res://Gameplay/Escenas/pelota.gd" id="1_sq4a2"]
+[ext_resource type="Texture2D" uid="uid://i6kxwspyncbl" path="res://icon.svg" id="2_088oq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hdmiu"]
+radius = 67.02985
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_k86q5"]
+radius = 66.910385
+
+[node name="Pelota" type="CharacterBody2D"]
+script = ExtResource("1_sq4a2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(0.235, 0.235)
+shape = SubResource("CircleShape2D_hdmiu")
+
+[node name="Icon" type="Sprite2D" parent="CollisionShape2D"]
+texture = ExtResource("2_088oq")
+
+[node name="Hitbox" type="Area2D" parent="." groups=["pelota"]]
+scale = Vector2(0.225, 0.225)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_k86q5")
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_area_2d_area_entered"]

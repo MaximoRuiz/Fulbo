@@ -1,9 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://dakphwh8q4546"]
+[gd_scene load_steps=4 format=3 uid="uid://dakphwh8q4546"]
 
-[ext_resource type="Texture2D" uid="uid://dghwa286qjrj2" path="res://icon.svg" id="1_wne7b"]
+[ext_resource type="PackedScene" uid="uid://bbsk6dyrn8cdg" path="res://Gameplay/Escenas/defensor.tscn" id="1_qxvbb"]
+[ext_resource type="PackedScene" uid="uid://be7vrved81iv3" path="res://node_2d.tscn" id="3_6w1i5"]
+[ext_resource type="PackedScene" uid="uid://ci4a8s3b6glt2" path="res://Gameplay/Escenas/pelota.tscn" id="3_ernjl"]
 
 [node name="Level01" type="Node2D"]
 
-[node name="Icon" type="Sprite2D" parent="."]
-position = Vector2(93, 89)
-texture = ExtResource("1_wne7b")
+[node name="Defensor" parent="." instance=ExtResource("1_qxvbb")]
+position = Vector2(88, 51)
+
+[node name="Pelota" parent="." instance=ExtResource("3_ernjl")]
+position = Vector2(644, 337)
+
+[node name="Node2D" parent="." instance=ExtResource("3_6w1i5")]
+position = Vector2(237, 466)

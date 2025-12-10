@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://bbsk6dyrn8cdg"]
+
+[ext_resource type="Texture2D" uid="uid://i6kxwspyncbl" path="res://icon.svg" id="1_2s8r6"]
+[ext_resource type="PackedScene" uid="uid://dljcebdvxbhhd" path="res://Gameplay/Escenas/hitbox_pierna.tscn" id="1_4bt3i"]
+[ext_resource type="Script" uid="uid://7at1vxeb7hw6" path="res://Gameplay/Escenas/defensor.gd" id="1_iaddo"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kjqyd"]
+radius = 20.0
+height = 68.0
+
+[node name="Defensor" type="CharacterBody2D"]
+script = ExtResource("1_iaddo")
+
+[node name="Icon" type="Sprite2D" parent="."]
+position = Vector2(0, 1)
+scale = Vector2(0.265625, 0.5078125)
+texture = ExtResource("1_2s8r6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_kjqyd")
+
+[node name="HitboxPierna" parent="." instance=ExtResource("1_4bt3i")]
+position = Vector2(0, 16)
+
+[connection signal="area_entered" from="HitboxPierna" to="." method="_on_hitbox_pierna_area_entered"]

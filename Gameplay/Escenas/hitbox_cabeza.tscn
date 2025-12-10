@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://r176gha7jwg8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_s0kh6"]
+
+[node name="HitboxCabeza" type="Area2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_s0kh6")
