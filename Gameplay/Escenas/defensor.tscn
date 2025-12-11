@@ -20,6 +20,7 @@ texture = ExtResource("1_2s8r6")
 shape = SubResource("CapsuleShape2D_kjqyd")
 
 [node name="HitboxPierna" parent="." instance=ExtResource("1_4bt3i")]
-position = Vector2(0, 16)
+position = Vector2(0, 19)
+scale = Vector2(1.185, 1)
 
 [connection signal="area_entered" from="HitboxPierna" to="." method="_on_hitbox_pierna_area_entered"]

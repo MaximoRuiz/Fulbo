@@ -11,23 +11,28 @@ var pelota: CharacterBody2D
 func _ready():
 	pelota = get_parent().get_node("Pelota")
 
-
 func _physics_process(delta):
 	# Si está siguiendo una ruta → mover por ruta
 	if siguiendo_ruta:
 		seguir_ruta(delta)
 	else:
-		# Si no está siguiendo nada → quieto
 		velocity = Vector2.ZERO
 
-	# --- si tiene la pelota, pegarla al jugador ---
+	# --- si tiene la pelota, pegarla al PuntoPelota ---
 	if tiene_pelota and pelota:
-		pelota.global_position = global_position + Vector2(10, 0)
+		var destino = $PuntoPelota.global_position
+		pelota.global_position = destino
 
-		# Patear con la tecla que ya usabas (ej: espacio)
 		if Input.is_action_just_pressed("ui_accept"):
 			patear_pelota()
 
+	# --- ROTACIÓN DEL JUGADOR ---
+	if velocity.length() > 0:
+		rotation = velocity.angle()
+
+	# --- ROTAR TAMBIÉN LA PELOTA ---
+	if tiene_pelota and pelota:
+		pelota.rotation = rotation
 
 func _on_hitbox_pierna_area_entered(area: Area2D) -> void:
 	if area.is_in_group("pelota"):
@@ -43,6 +48,7 @@ func tomar_pelota(p: CharacterBody2D) -> void:
 	pelota.set_collision_mask(0)
 
 	pelota.velocity = Vector2.ZERO
+	pelota.global_position = $PuntoPelota.global_position
 	print("Pelota tomada")
 
 

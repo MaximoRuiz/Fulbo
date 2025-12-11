@@ -19,4 +19,7 @@ texture = ExtResource("1_lsi4v")
 position = Vector2(-1, 39)
 scale = Vector2(3.055, 1.355)
 
+[node name="PuntoPelota" type="Node2D" parent="."]
+position = Vector2(88, 42)
+
 [connection signal="area_entered" from="HitboxPierna" to="." method="_on_hitbox_pierna_area_entered"]
