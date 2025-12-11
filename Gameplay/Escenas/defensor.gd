@@ -42,7 +42,9 @@ func _on_hitbox_pierna_area_entered(area: Area2D) -> void:
 	if area.is_in_group("pelota"):
 		var p = area.get_parent()  # pelota real
 		var dir = (p.global_position - global_position).normalized()
-		p.empujar(dir, 800)
+		var fuerza = 800 + velocity.length() * 0.5
+		pelota.empujar(dir, fuerza)
+
 
 
 func tomar_pelota(p: CharacterBody2D) -> void:
