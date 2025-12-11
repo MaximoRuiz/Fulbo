@@ -1,25 +1,30 @@
 [gd_scene load_steps=5 format=3 uid="uid://bijs1kwt2ldkg"]
 
 [ext_resource type="Script" uid="uid://j4hh28pflenq" path="res://Gameplay/Escenas/player.gd" id="1_0v6rd"]
-[ext_resource type="Texture2D" uid="uid://i6kxwspyncbl" path="res://icon.svg" id="1_lsi4v"]
+[ext_resource type="Texture2D" uid="uid://b1bpswd5ced8c" path="res://Free Football Assets/Footballers/Argentina/walk.png" id="2_lm0od"]
 [ext_resource type="PackedScene" uid="uid://dljcebdvxbhhd" path="res://Gameplay/Escenas/hitbox_pierna.tscn" id="3_lm0od"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lsi4v"]
+radius = 11.0
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
+scale = Vector2(3, 3)
 script = ExtResource("1_0v6rd")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_lsi4v")
 
-[node name="Icon" type="Sprite2D" parent="CollisionShape2D"]
-texture = ExtResource("1_lsi4v")
+[node name="Walk" type="Sprite2D" parent="CollisionShape2D"]
+position = Vector2(-0.33333334, -1.3333334)
+scale = Vector2(1.285, 1.285)
+texture = ExtResource("2_lm0od")
+hframes = 4
 
 [node name="HitboxPierna" parent="." instance=ExtResource("3_lm0od")]
-position = Vector2(-1, 39)
-scale = Vector2(3.055, 1.355)
+position = Vector2(0, 7)
+scale = Vector2(0.235, 0.16)
 
 [node name="PuntoPelota" type="Node2D" parent="."]
-position = Vector2(88, 42)
+position = Vector2(10.333334, 8.666667)
 
 [connection signal="area_entered" from="HitboxPierna" to="." method="_on_hitbox_pierna_area_entered"]
