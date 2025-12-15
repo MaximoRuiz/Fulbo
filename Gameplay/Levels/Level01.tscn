@@ -1,8 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://dakphwh8q4546"]
+[gd_scene load_steps=6 format=3 uid="uid://dakphwh8q4546"]
 
 [ext_resource type="PackedScene" uid="uid://bbsk6dyrn8cdg" path="res://Gameplay/Escenas/defensor.tscn" id="1_qxvbb"]
 [ext_resource type="PackedScene" uid="uid://be7vrved81iv3" path="res://node_2d.tscn" id="3_6w1i5"]
 [ext_resource type="PackedScene" uid="uid://ci4a8s3b6glt2" path="res://Gameplay/Escenas/pelota.tscn" id="3_ernjl"]
+[ext_resource type="PackedScene" uid="uid://bn2c76uee5wgv" path="res://Gameplay/Escenas/AbilityToken.tscn" id="4_6w1i5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6w1i5"]
+bg_color = Color(0.62378573, 0, 0.06957166, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
 
 [node name="Level01" type="Node2D"]
 
@@ -13,4 +21,24 @@ position = Vector2(88, 51)
 position = Vector2(644, 337)
 
 [node name="Node2D" parent="." instance=ExtResource("3_6w1i5")]
-position = Vector2(237, 466)
+position = Vector2(239, 371)
+ability_token_scene = ExtResource("4_6w1i5")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Node2D"]
+
+[node name="StartButton" type="Button" parent="Node2D/CanvasLayer"]
+offset_left = 970.0
+offset_top = 542.0
+offset_right = 1151.0
+offset_bottom = 648.0
+text = "Iniciar"
+
+[node name="RedButton" type="Button" parent="Node2D/CanvasLayer"]
+offset_left = 35.0
+offset_top = 543.0
+offset_right = 113.0
+offset_bottom = 621.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_6w1i5")
+
+[connection signal="pressed" from="Node2D/CanvasLayer/StartButton" to="Node2D" method="_on_start_button_pressed"]
+[connection signal="pressed" from="Node2D/CanvasLayer/RedButton" to="Node2D" method="_on_red_button_pressed"]

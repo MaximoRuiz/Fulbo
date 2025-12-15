@@ -1,0 +1,65 @@
+[gd_scene load_steps=2 format=3 uid="uid://bw6gklu8b102y"]
+
+[ext_resource type="Script" path="res://Menus/MainMenu.gd" id="1_3g7qx"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3g7qx")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MainVBox" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Titulo_Juego" type="Label" parent="MarginContainer/MainVBox"]
+layout_mode = 2
+
+[node name="CalendarBox" type="VBoxContainer" parent="MarginContainer/MainVBox/Titulo_Juego"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MainVBox/Titulo_Juego/CalendarBox"]
+layout_mode = 2
+
+[node name="PrevDateButton" type="Button" parent="MarginContainer/MainVBox/Titulo_Juego/CalendarBox/HBoxContainer"]
+layout_mode = 2
+text = "<"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/MainVBox/Titulo_Juego/CalendarBox/HBoxContainer"]
+layout_mode = 2
+
+[node name="DateLabel" type="Label" parent="MarginContainer/MainVBox/Titulo_Juego/CalendarBox/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Domingo 01/06/2025"
+
+[node name="MatchInfoLabel" type="Label" parent="MarginContainer/MainVBox/Titulo_Juego/CalendarBox/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Fecha 1 Sacachispas vs Belgrano"
+
+[node name="NextDateButton" type="Button" parent="MarginContainer/MainVBox/Titulo_Juego/CalendarBox/HBoxContainer"]
+layout_mode = 2
+text = ">"
+
+[node name="ExtraInfoLabel" type="Label" parent="MarginContainer/MainVBox/Titulo_Juego/CalendarBox"]
+layout_mode = 2
+text = "Estadio: Barrio Pobre FC"
+
+[node name="PlayButton" type="Button" parent="MarginContainer/MainVBox"]
+layout_mode = 2
+text = "Jugar partido"
+
+[node name="BottomButtons" type="HBoxContainer" parent="MarginContainer/MainVBox"]
+layout_mode = 2
+
+[node name="SettingsButton" type="Button" parent="MarginContainer/MainVBox/BottomButtons"]
+layout_mode = 2
+text = "Configuración"
