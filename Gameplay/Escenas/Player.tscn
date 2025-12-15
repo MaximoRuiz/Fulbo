@@ -21,8 +21,8 @@ texture = ExtResource("2_lm0od")
 hframes = 4
 
 [node name="HitboxPierna" parent="." instance=ExtResource("3_lm0od")]
-position = Vector2(0, 7)
-scale = Vector2(0.235, 0.16)
+position = Vector2(0, 6)
+scale = Vector2(0.235, 0.3)
 
 [node name="PuntoPelota" type="Node2D" parent="."]
 position = Vector2(10.333334, 8.666667)

@@ -1,9 +1,28 @@
 extends Area2D
 
-var dragging := true
+var dragging: bool = true
+
+func _ready() -> void:
+	add_to_group("ability_tokens")
+	input_pickable = true  # por si lo desactivaron en algún momento
+
 
 func set_dragging(v: bool) -> void:
 	dragging = v
+
+
+func _input_event(viewport, event, shape_idx) -> void:
+	# Click sobre el token -> volver a agarrarlo
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		dragging = true
+
+		# IMPORTANTÍSIMO: que este click no llegue al Node2D para dibujar
+		viewport.set_input_as_handled()
+
+		# Avisarle al padre (Node2D) que estamos colocando este token
+		if get_parent() and get_parent().has_method("begin_place_token"):
+			get_parent().begin_place_token(self)
+
 
 func _process(delta: float) -> void:
 	if not dragging:

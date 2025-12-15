@@ -10,6 +10,7 @@ var current_token: Node = null
 @onready var player: CharacterBody2D = get_node("Player")
 
 
+
 func _ready() -> void:
 	# Para borrar tokens cuando el jugador termina la ruta
 	# (esto requiere que Player.gd tenga: signal ruta_terminada y emit_signal al terminar)
@@ -23,14 +24,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			if current_token and current_token.has_method("set_dragging"):
 				current_token.set_dragging(false)
-
 			placing_token = false
 			current_token = null
 			drawing = false
 			return
-
-		# Mientras colocamos token, ignoramos todo el input de dibujo
 		return
+
 
 	# 2) DIBUJO NORMAL DE LA LÍNEA
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -69,24 +68,30 @@ func enviar_ruta_al_jugador() -> void:
 
 # ------------ TOKENS / HABILIDADES ------------
 
+func begin_place_token(token: Node) -> void:
+	placing_token = true
+	current_token = token
+	drawing = false
+
 func crear_ability_token(color: Color) -> void:
+	print("ability_token_scene =", ability_token_scene)
 	if ability_token_scene == null:
+		push_warning("Ability Token Scene está NULL (no asignada en el Inspector)")
 		return
 
 	var token := ability_token_scene.instantiate()
 	add_child(token)
-
-	# Spawn cerca del mouse (en coordenadas globales del mundo)
 	token.global_position = get_global_mouse_position()
 	token.modulate = color
 
-	# Entramos en modo "colocación"
 	placing_token = true
 	current_token = token
 	drawing = false
 
 
+
 func _on_red_button_pressed() -> void:
+	print("RED PRESSED")
 	crear_ability_token(Color.RED)
 
 
