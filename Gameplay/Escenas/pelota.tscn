@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://ci4a8s3b6glt2"]
 
 [ext_resource type="Script" uid="uid://do5ojknxatmc4" path="res://Gameplay/Escenas/pelota.gd" id="1_sq4a2"]
-[ext_resource type="Texture2D" uid="uid://i6kxwspyncbl" path="res://icon.svg" id="2_088oq"]
+[ext_resource type="Texture2D" uid="uid://oxeot2kt4ybi" path="res://Free Football Assets/pelota_imagen.png" id="2_088oq"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hdmiu"]
 radius = 67.02985
@@ -17,6 +17,7 @@ scale = Vector2(0.235, 0.235)
 shape = SubResource("CircleShape2D_hdmiu")
 
 [node name="Icon" type="Sprite2D" parent="CollisionShape2D"]
+scale = Vector2(0.2850575, 0.2850575)
 texture = ExtResource("2_088oq")
 
 [node name="Hitbox" type="Area2D" parent="." groups=["pelota"]]

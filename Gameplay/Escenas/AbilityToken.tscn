@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://bn2c76uee5wgv"]
+
+[ext_resource type="Script" uid="uid://dcpy0c5tpwf2p" path="res://Gameplay/Escenas/ability_token.gd" id="1_ecpqq"]
+[ext_resource type="Texture2D" uid="uid://xvkq623k4fra" path="res://Gameplay/Escenas/red-circle-sun-icon-png.png" id="2_ecpqq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_okx22"]
+radius = 59.574467
+
+[node name="AbilityToken" type="Area2D"]
+script = ExtResource("1_ecpqq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.07901751, 0.07901751)
+texture = ExtResource("2_ecpqq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4.7683716e-07)
+scale = Vector2(0.235, 0.235)
+shape = SubResource("CircleShape2D_okx22")

@@ -1,107 +1,143 @@
 extends CharacterBody2D
 
-var speed := 220
+var speed: float = 220.0
+
+# Referencia a la pelota
+var pelota: CharacterBody2D = null
 
 # --------------------
-# SISTEMA DE PELOTA
+# SISTEMA DE RUTA
 # --------------------
-var tiene_pelota := false
-var pelota: CharacterBody2D
+var path: Array[Vector2] = []   # puntos globales de la línea
+var target_index: int = 0       # índice actual en el path
+var siguiendo_ruta: bool = false
+
+
+# “Rango” de movimiento alrededor de la línea
+const CHASE_RADIUS: float = 200.0   # hasta qué distancia persigue la pelota
+const REACH_POINT_DIST: float = 10.0
 
 
 
+func _ready() -> void:
+	# Buscar la pelota en toda la escena (por si cambia la jerarquía)
+	var root: Node = get_tree().current_scene
+	var found := root.find_child("Pelota", true, false)
+	if found is CharacterBody2D:
+		pelota = found
+	else:
+		print("WARN: No encontré nodo 'Pelota' en la escena.")
 
-func _physics_process(delta):
-	# Si está siguiendo una ruta → mover por ruta
+
+func _physics_process(delta: float) -> void:
 	if siguiendo_ruta:
 		seguir_ruta(delta)
 	else:
 		velocity = Vector2.ZERO
 
-	# --- si tiene la pelota, pegarla al PuntoPelota ---
-	if tiene_pelota and pelota:
-		var destino = $PuntoPelota.global_position
-		pelota.global_position = destino
-
-		if Input.is_action_just_pressed("ui_accept"):
-			patear_pelota()
-
-	# --- ROTACIÓN DEL JUGADOR ---
-	if velocity.length() > 0:
+	# Rotar el jugador según hacia dónde se está moviendo
+	if velocity.length() > 0.1:
 		rotation = velocity.angle()
 
-	# --- ROTAR TAMBIÉN LA PELOTA ---
-	if tiene_pelota and pelota:
-		pelota.rotation = rotation
+
+# ============================================================
+#   EMPUJAR LA PELOTA SEGÚN LA DIRECCIÓN DE LA LÍNEA
+# ============================================================
 
 func _on_hitbox_pierna_area_entered(area: Area2D) -> void:
-	if area.is_in_group("pelota"):
-		tomar_pelota(area.get_parent())
-
-
-func tomar_pelota(p: CharacterBody2D) -> void:
-	tiene_pelota = true
-	pelota = p
-	
-	# desactivar colisiones para que no empuje al jugador
-	pelota.set_collision_layer(0)
-	pelota.set_collision_mask(0)
-
-	pelota.velocity = Vector2.ZERO
-	pelota.global_position = $PuntoPelota.global_position
-	print("Pelota tomada")
-
-
-func patear_pelota() -> void:
-	if not tiene_pelota:
+	if not area.is_in_group("pelota"):
 		return
 
-	var dir := (pelota.global_position - global_position).normalized()
-	pelota.empujar(dir, 900)
+	var bola := area.get_parent() as CharacterBody2D
+	if bola == null:
+		return
 
-	# volver a activar colisiones
-	pelota.set_collision_layer(1)
-	pelota.set_collision_mask(1)
+	var dir: Vector2
+	var fuerza: float
 
-	tiene_pelota = false
-	print("Pelota pateada")
+	# 1) Si estamos siguiendo una ruta y hay al menos 2 puntos,
+	#    usamos el segmento path[target_index] -> path[target_index+1]
+	#    como “derivada” (tangente) de la línea.
+	if siguiendo_ruta and path.size() > 1:
+		var idx: int = clampi(target_index, 0, path.size() - 2)
+		var p0: Vector2 = path[idx]
+		var p1: Vector2 = path[idx + 1]
 
+		var tangente: Vector2 = p1 - p0
+		if tangente.length() > 0.1:
+			dir = tangente.normalized()
+		else:
+			dir = (p1 - bola.global_position).normalized()
+
+		# Toque corto, un poco por delante del jugador
+		fuerza = 330.0
+
+	# 2) Si NO hay ruta → usar la dirección actual de movimiento del jugador
+	elif velocity.length() > 0.1:
+		dir = velocity.normalized()
+		var fuerza_calc: float = velocity.length()
+		fuerza = clampf(fuerza_calc, 260.0, 420.0)
+
+	# 3) Jugador casi quieto → empujón suave hacia la pelota
+	else:
+		dir = (bola.global_position - global_position).normalized()
+		fuerza = 250.0
+
+	bola.empujar(dir, fuerza)
 
 
 # ============================================================
 #               SISTEMA DE SEGUIR RUTA DIBUJADA
+#      (con desvío para buscar la pelota)
 # ============================================================
 
-var path := []             # lista de puntos globales
-var target_index := 0      # a qué punto del camino voy
-var siguiendo_ruta := false
-
-
-func set_path(new_path):
-	# Recibe una lista de Vector2 (globales)
+func set_path(new_path: Array[Vector2]) -> void:
 	path = new_path
 	target_index = 0
-	siguiendo_ruta = true
+	siguiendo_ruta = path.size() > 0
 
 
-func seguir_ruta(delta):
+func seguir_ruta(delta: float) -> void:
+	if path.is_empty():
+		siguiendo_ruta = false
+		velocity = Vector2.ZERO
+		return
+
 	if target_index >= path.size():
 		siguiendo_ruta = false
 		velocity = Vector2.ZERO
-		
+
 		# BORRAR LA LÍNEA CUANDO TERMINA
-		get_parent().get_node("Linea").points = []
+		var parent := get_parent()
+		if parent and parent.has_node("Linea"):
+			var linea = parent.get_node("Linea")
+			if linea is Line2D:
+				linea.points = []
 		return
 
+	# Punto “ideal” sobre la línea
+	var base_objetivo: Vector2 = path[target_index]
+	# Objetivo real al que nos vamos a mover (puede desviarse hacia la pelota)
+	var objetivo: Vector2 = base_objetivo
 
-	var objetivo = path[target_index]
-	var dir = objetivo - global_position
+	if pelota:
+		var dist_jugador_pelota: float = (pelota.global_position - global_position).length()
 
-	# Si llega cerca del punto, pasar al próximo
-	if dir.length() < 10:
+		# Si la pelota está dentro del radio → perseguirla en vez de ir directo al punto
+		if dist_jugador_pelota < CHASE_RADIUS:
+			objetivo = pelota.global_position
+
+	# Avanzar al siguiente punto del path cuando nos acercamos lo suficiente
+	var dist_a_base: float = (base_objetivo - global_position).length()
+	if dist_a_base < REACH_POINT_DIST:
 		target_index += 1
 		return
 
-	# Mover hacia el punto
-	velocity = dir.normalized() * speed
+	# Mover al jugador hacia el objetivo (línea o pelota)
+	var dir: Vector2 = objetivo - global_position
+	if dir.length() > 0.1:
+		velocity = dir.normalized() * speed
+	else:
+		velocity = Vector2.ZERO
+
 	move_and_slide()

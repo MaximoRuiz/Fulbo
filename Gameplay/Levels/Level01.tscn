@@ -1,11 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://dakphwh8q4546"]
+
+
+[gd_scene load_steps=9 format=3 uid="uid://dakphwh8q4546"]
+
 
 [ext_resource type="PackedScene" uid="uid://bbsk6dyrn8cdg" path="res://Gameplay/Escenas/defensor.tscn" id="1_qxvbb"]
-[ext_resource type="Script" uid="uid://b45dflldt4ymm" path="res://Gameplay/Levels/level_01.gd" id="1_yla76"]
+[ext_resource type="Script" path="res://Gameplay/Levels/level_01.gd" id="1_yla76"]
 [ext_resource type="PackedScene" uid="uid://be7vrved81iv3" path="res://node_2d.tscn" id="3_6w1i5"]
 [ext_resource type="PackedScene" uid="uid://ci4a8s3b6glt2" path="res://Gameplay/Escenas/pelota.tscn" id="3_ernjl"]
-[ext_resource type="PackedScene" uid="uid://d3k63bprsqfac" path="res://timer.tscn" id="5_i6uj5"]
-[ext_resource type="PackedScene" uid="uid://1q5onrjn7pn3" path="res://meta.tscn" id="6_i6uj5"]
+
+[ext_resource type="PackedScene" uid="uid://bn2c76uee5wgv" path="res://Gameplay/Escenas/AbilityToken.tscn" id="4_6w1i5"]
+[ext_resource type="PackedScene" path="res://timer.tscn" id="5_i6uj5"]
+[ext_resource type="Texture2D" uid="uid://xvkq623k4fra" path="res://Gameplay/Escenas/red-circle-sun-icon-png.png" id="6_i6uj5"]
+[ext_resource type="AudioStream" uid="uid://bilbag30vthv2" path="res://Free Football Assets/Muchachos 8-bit simple.wav" id="8_bjrga"]
+
 
 [node name="Level01" type="Node2D"]
 script = ExtResource("1_yla76")
@@ -19,7 +26,10 @@ collision_layer = 0
 collision_mask = 0
 
 [node name="Player" parent="." instance=ExtResource("3_6w1i5")]
-position = Vector2(1036, 73)
+
+position = Vector2(237, 466)
+ability_token_scene = ExtResource("4_6w1i5")
+
 
 [node name="TiempoPartida" parent="." instance=ExtResource("5_i6uj5")]
 one_shot = true
@@ -33,10 +43,33 @@ offset_bottom = 36.0
 max_value = 10.0
 value = 10.0
 
-[node name="Meta" parent="." instance=ExtResource("6_i6uj5")]
-position = Vector2(1147, 316)
-scale = Vector2(1, 2.345)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="StartButton" type="Button" parent="CanvasLayer"]
+offset_left = 997.0
+offset_top = 549.0
+offset_right = 1152.0
+offset_bottom = 648.0
+text = "Iniciar
+"
+
+[node name="RedButton" type="Button" parent="CanvasLayer"]
+offset_left = 37.0
+offset_top = 548.0
+offset_right = 395.0
+offset_bottom = 906.0
+scale = Vector2(0.2, 0.2)
+icon = ExtResource("6_i6uj5")
+flat = true
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_bjrga")
+volume_db = -15.572
+autoplay = true
 
 [connection signal="timeout" from="TiempoPartida" to="." method="_on_tiempo_partida_timeout"]
 [connection signal="value_changed" from="BarraTiempo" to="." method="_on_barra_tiempo_value_changed"]
-[connection signal="body_entered" from="Meta" to="." method="_on_meta_body_entered"]
+[connection signal="pressed" from="CanvasLayer/StartButton" to="Player" method="_on_start_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/RedButton" to="Player" method="_on_red_button_pressed"]
+
