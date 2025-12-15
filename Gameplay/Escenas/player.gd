@@ -8,8 +8,8 @@ var speed := 220
 var tiene_pelota := false
 var pelota: CharacterBody2D
 
-func _ready():
-	pelota = get_parent().get_node("Pelota")
+
+
 
 func _physics_process(delta):
 	# Si está siguiendo una ruta → mover por ruta
