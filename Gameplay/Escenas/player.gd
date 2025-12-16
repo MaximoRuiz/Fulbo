@@ -17,6 +17,8 @@ var siguiendo_ruta: bool = false
 const CHASE_RADIUS: float = 200.0   # hasta qué distancia persigue la pelota
 const REACH_POINT_DIST: float = 10.0
 
+var win_triggered := false
+const WIN_X := 700.0
 
 
 func _ready() -> void:
@@ -38,6 +40,19 @@ func _physics_process(delta: float) -> void:
 	# Rotar el jugador según hacia dónde se está moviendo
 	if velocity.length() > 0.1:
 		rotation = velocity.angle()
+		
+	if not win_triggered and global_position.x > WIN_X:
+		win_triggered = true
+		call_deferred("_go_win")
+
+func _go_win() -> void:
+	SceneManager.swap_scenes(
+		SceneRegistry.main_scenes["win"],
+		get_tree().root,
+		get_tree().current_scene,
+		"wipe_to_right"
+	)
+
 
 
 # ============================================================

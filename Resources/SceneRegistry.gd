@@ -6,10 +6,12 @@ class_name SceneRegistry extends Node
 # so we're going to minimize how much/often we have to use that until Godot gets proper refactoring :)
 
 const main_scenes = {
-	"StartScreen": "res://Menus/start_screen.gd"
+	"StartScreen": "res://Menus/start_screen.tscn",
+	"lost" : "res://Gameplay/StaticEscenas/lost/lost.tscn",
+	"win" : "res://Gameplay/StaticEscenas/win/win.tscn"
 }
 
 const levels = {
 	"game_start" : "res://Gameplay/Levels/Level01.tscn",
-	"segundo_nivel" : "res://Gameplay/Escenas/hitbox_cabeza.tscn"
+	"segundo_nivel" : "res://Gameplay/Escenas/hitbox_cabeza.tscn",
 }

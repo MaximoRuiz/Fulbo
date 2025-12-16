@@ -1,35 +1,28 @@
-
-
 [gd_scene load_steps=9 format=3 uid="uid://dakphwh8q4546"]
 
-
 [ext_resource type="PackedScene" uid="uid://bbsk6dyrn8cdg" path="res://Gameplay/Escenas/defensor.tscn" id="1_qxvbb"]
-[ext_resource type="Script" path="res://Gameplay/Levels/level_01.gd" id="1_yla76"]
+[ext_resource type="Script" uid="uid://b45dflldt4ymm" path="res://Gameplay/Levels/level_01.gd" id="1_yla76"]
 [ext_resource type="PackedScene" uid="uid://be7vrved81iv3" path="res://node_2d.tscn" id="3_6w1i5"]
 [ext_resource type="PackedScene" uid="uid://ci4a8s3b6glt2" path="res://Gameplay/Escenas/pelota.tscn" id="3_ernjl"]
-
 [ext_resource type="PackedScene" uid="uid://bn2c76uee5wgv" path="res://Gameplay/Escenas/AbilityToken.tscn" id="4_6w1i5"]
-[ext_resource type="PackedScene" path="res://timer.tscn" id="5_i6uj5"]
+[ext_resource type="PackedScene" uid="uid://d3k63bprsqfac" path="res://timer.tscn" id="5_i6uj5"]
 [ext_resource type="Texture2D" uid="uid://xvkq623k4fra" path="res://Gameplay/Escenas/red-circle-sun-icon-png.png" id="6_i6uj5"]
 [ext_resource type="AudioStream" uid="uid://bilbag30vthv2" path="res://Free Football Assets/Muchachos 8-bit simple.wav" id="8_bjrga"]
-
 
 [node name="Level01" type="Node2D"]
 script = ExtResource("1_yla76")
 
 [node name="Defensor" parent="." instance=ExtResource("1_qxvbb")]
-position = Vector2(1113, 586)
+position = Vector2(919, 352)
 
-[node name="Pelota" parent="." instance=ExtResource("3_ernjl")]
-position = Vector2(1113, 70)
+[node name="Pelota" parent="." groups=["Pelota"] instance=ExtResource("3_ernjl")]
+position = Vector2(366, 351)
 collision_layer = 0
 collision_mask = 0
 
 [node name="Player" parent="." instance=ExtResource("3_6w1i5")]
-
-position = Vector2(237, 466)
+position = Vector2(287, 340)
 ability_token_scene = ExtResource("4_6w1i5")
-
 
 [node name="TiempoPartida" parent="." instance=ExtResource("5_i6uj5")]
 one_shot = true
@@ -43,14 +36,13 @@ offset_bottom = 36.0
 max_value = 10.0
 value = 10.0
 
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="StartButton" type="Button" parent="CanvasLayer"]
 offset_left = 997.0
-offset_top = 549.0
+offset_top = 548.0
 offset_right = 1152.0
-offset_bottom = 648.0
+offset_bottom = 647.0
 text = "Iniciar
 "
 
@@ -72,4 +64,3 @@ autoplay = true
 [connection signal="value_changed" from="BarraTiempo" to="." method="_on_barra_tiempo_value_changed"]
 [connection signal="pressed" from="CanvasLayer/StartButton" to="Player" method="_on_start_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/RedButton" to="Player" method="_on_red_button_pressed"]
-
